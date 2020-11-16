@@ -1,6 +1,6 @@
 import java.io.IOException;
 
 public interface Lock extends MsgHandler {
-    public void requestCS() throws IOException;
-    public void releaseCS() throws IOException;
+    public void cs_enter() throws IOException;
+    public void cs_leave() throws IOException;
 }

@@ -21,21 +21,25 @@ public class LockTest2 {
                     (new ListenerThread(i,(MsgHandler)lock)).start();
             }
 
-            FileWriter myWriter = new FileWriter("src/log"+myId+".txt");
+            FileWriter myWriter = new FileWriter("mylog"+myId+".txt");
             for(int i=0;i<Node_requests;i++){
+                myWriter.write("RequestNum"+i+"#\t");
+
                 System.out.println(myId+ " is not in CS");
 //                Util.mySleep(2000);
-                Thread.sleep(2000);
 
-                lock.requestCS();
+                Thread.sleep(Inter_request_delay);
+                myWriter.write("requestTime "+LocalTime.now()+"#\t");
+                lock.cs_enter();
 //                System.out.println("startTime "+LocalTime.now());
-                myWriter.write("startTime "+LocalTime.now()+"\t");
+                myWriter.write("startTime "+LocalTime.now()+"#\t");
 //                Util.mySleep(2000);
-                Thread.sleep(2000);
+                Thread.sleep(Cs_execution_time);
                 System.out.println(myId+ " is in CS");
-                lock.releaseCS();
-                System.out.println("endTime "+LocalTime.now());
                 myWriter.write("endTime "+LocalTime.now()+"\n");
+                lock.cs_leave();
+                System.out.println("endTime "+LocalTime.now());
+
             }
             myWriter.close();
         }
@@ -48,5 +52,7 @@ public class LockTest2 {
             System.out.println(e);
             e.printStackTrace();
         }
+
+
     }
 }

@@ -24,7 +24,7 @@ public class RAMutex extends Process implements Lock{
 
     }
     @Override
-    public synchronized void requestCS() throws IOException {
+    public synchronized void cs_enter() throws IOException {
         List<Integer> competed_process_id = count_num_of_competed(keys);
         int numOfcompeted = competed_process_id.size();
         c.tick();
@@ -48,7 +48,7 @@ public class RAMutex extends Process implements Lock{
     }
 
     @Override
-    public synchronized void releaseCS() throws IOException {
+    public synchronized void cs_leave() throws IOException {
         myts = Integer.MAX_VALUE;
         while (!pendingQ.isEmpty()){
             int pid = pendingQ.removeFirst();

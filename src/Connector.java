@@ -36,7 +36,7 @@ public class Connector {
         }
         if (myId == 0) {
             try {
-                Thread.sleep(8000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -68,7 +68,7 @@ public class Connector {
 //        id_to_host.put(2,"dc03");
 //        id_to_port.put(2,2022);
         File f = new File("src/configuration.txt");
-        System.out.println(f);
+//        System.out.println(f);
         Scanner myReader = new Scanner(f);
         int count = 0;
         while (myReader.hasNextLine()) {

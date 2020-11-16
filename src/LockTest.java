@@ -20,7 +20,7 @@ public class LockTest {
             int myId = identifier;
             int numProc = Node_num;
 
-            FileWriter myWriter = new FileWriter("src/log"+myId+".txt");
+            FileWriter myWriter = new FileWriter("mylog"+myId+".txt");
             comm = new Linker(baseName,myId,numProc);
             Lock lock = new RAMutex(comm);
             for(int i=0;i<numProc;i++){
@@ -28,19 +28,26 @@ public class LockTest {
                     (new ListenerThread(i,(MsgHandler)lock)).start();
             }
             for(int i=0;i<Node_requests;i++){
+                myWriter.write("RequestNum"+i+"#\t");
+
                 System.out.println(myId+ " is not in CS");
 //                Util.mySleep(2000);
-                Thread.sleep(2000);
 
-                lock.requestCS();
+                Thread.sleep(Inter_request_delay);
+
+                myWriter.write("requestTime "+LocalTime.now()+"#\t");
+                lock.cs_enter();
 //                lock.inCritical = true;
 //                System.out.println("startTime "+LocalTime.now());
-                myWriter.write("startTime "+LocalTime.now()+"\t");
+                myWriter.write("startTime "+LocalTime.now()+"#\t");
+                myWriter.flush();
 //                Util.mySleep(2000);
-                Thread.sleep(2000);
+                Thread.sleep(Cs_execution_time);
                 System.out.println(myId+ " is in CS");
-                lock.releaseCS();
                 myWriter.write("endTime "+LocalTime.now()+"\n");
+                lock.cs_leave();
+
+                myWriter.flush();
 //                System.out.println("endTime "+LocalTime.now());
             }
             myWriter.close();
